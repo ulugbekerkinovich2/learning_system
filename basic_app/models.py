@@ -3,14 +3,6 @@ from django.db import models
 # Create your models here.
 from django.utils import timezone
 
-
-class Message(models.Model):
-    chat_for_students = models.TextField()
-
-    def __str__(self):
-        return self.chat_for_students
-
-
 from django.utils.translation import gettext as _
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
@@ -46,14 +38,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     username = models.CharField(_('username'), max_length=50, unique=True)
-    role = models.CharField(max_length=20)
+    role = models.CharField(max_length=20, default="none")
     subject = models.CharField(default='english', max_length=20)
     image = models.ImageField(upload_to='images/')
     email = models.EmailField(max_length=30)
-    mark = models.IntegerField(null=True)
+
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
@@ -73,7 +64,7 @@ class Students(models.Model):
     subject = models.CharField(default='english', max_length=20)
 
     def __str__(self):
-        return self.name
+        return self.file
 
 
 class Marks(models.Model):
@@ -83,4 +74,11 @@ class Marks(models.Model):
     subject = models.CharField(default='english', max_length=20)
 
     def __str__(self):
-        return self.student_name
+        return self.subject
+
+
+class Message(models.Model):
+    chat_for_students = models.TextField()
+
+    def __str__(self):
+        return self.chat_for_students
